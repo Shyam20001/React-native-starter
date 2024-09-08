@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ActivityIndicator, FlatList, StyleSheet, ScrollView } from 'react-native'; // Import ScrollView
+import { View, Text, ActivityIndicator, StyleSheet, ScrollView } from 'react-native'; // Import ScrollView
 import useFetchData from './api/Fetchdata';
 
 const CompanyPolicy = () => {
@@ -15,8 +15,8 @@ const CompanyPolicy = () => {
 
     if (error) {
         return (
-            <View style={styles.container}>
-                <Text>Error: {error}</Text>
+            <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Error: {error}</Text>
             </View>
         );
     }
@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 16,
+        color: '#333', // Darker color for text visibility
     },
     policyContainer: {
         marginBottom: 20,
@@ -55,10 +56,22 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 8,
+        color: '#333', // Darker color for text visibility
     },
     policyDescription: {
         fontSize: 16,
         color: '#555',
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff', // Ensure background color matches container
+        padding: 16,
+    },
+    errorText: {
+        color: 'red', // Red color for error text
+        fontSize: 16,
     },
 });
 

@@ -16,7 +16,7 @@ const AboutUs = () => {
     if (error) {
         return (
             <View style={styles.container}>
-                <Text>Error: {error}</Text>
+                <Text style={styles.errorText}>Error: {error}</Text>
             </View>
         );
     }
@@ -40,9 +40,11 @@ const AboutUs = () => {
                 </View>
             ))}
             <Text style={styles.subHeader}>Contact Info</Text>
-            <Text>Email: {data.contactInfo.email}</Text>
-            <Text>Phone: {data.contactInfo.phone}</Text>
-            <Text>Address: {data.contactInfo.address}</Text>
+            <View style={styles.contactInfo}>
+                <Text style={styles.contactText}>Email: {data.contactInfo.email}</Text>
+                <Text style={styles.contactText}>Phone: {data.contactInfo.phone}</Text>
+                <Text style={styles.contactText}>Address: {data.contactInfo.address}</Text>
+            </View>
         </ScrollView>
     );
 };
@@ -51,26 +53,30 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
-        backgroundColor: '#fff',
+        backgroundColor: '#f5f5f5', // Light background for better contrast
     },
     header: {
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 16,
+        color: '#333', // Darker color for text visibility
     },
     subHeader: {
         fontSize: 18,
         fontWeight: 'bold',
         marginTop: 16,
         marginBottom: 8,
+        color: '#333', // Darker color for text visibility
     },
     mission: {
         fontSize: 16,
         marginBottom: 8,
+        color: '#333', // Darker color for text visibility
     },
     vision: {
         fontSize: 16,
         marginBottom: 8,
+        color: '#333', // Darker color for text visibility
     },
     value: {
         fontSize: 16,
@@ -83,14 +89,31 @@ const styles = StyleSheet.create({
     memberName: {
         fontSize: 18,
         fontWeight: 'bold',
+        color: '#333', // Darker color for text visibility
     },
     memberRole: {
         fontSize: 16,
         fontStyle: 'italic',
+        color: '#333', // Darker color for text visibility
     },
     memberBio: {
         fontSize: 16,
         color: '#555',
+    },
+    contactInfo: {
+        marginTop: 16,
+        padding: 10,
+        backgroundColor: '#e0e0e0', // Light grey background for better contrast
+        borderRadius: 5,
+    },
+    contactText: {
+        fontSize: 16,
+        color: '#333',
+        marginBottom: 8,
+    },
+    errorText: {
+        color: 'red',
+        fontSize: 16,
     },
 });
 

@@ -113,9 +113,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 25,
     fontWeight: 'bold',
     marginBottom: 10,
+    borderRadius: 5,
+    backgroundColor: '#ff6400b3',
+    padding: 20,
   },
   navbar: {
     flexDirection: 'row',
@@ -123,9 +126,9 @@ const styles = StyleSheet.create({
   },
   tab: {
     padding: 10,
-    backgroundColor: '#ffe0cc',
+    backgroundColor: '#595959',
     marginRight: 5,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   tabText: {
     fontSize: 16,

@@ -3,7 +3,7 @@ import { View, Text, ActivityIndicator, StyleSheet, ScrollView } from 'react-nat
 import useFetchData from './api/Fetchdata';
 
 const Schedule = () => {
-    const { data, error, loading } = useFetchData('schedule');
+    const { data, error, loading } = useFetchData('schedule'); // Corrected endpoint name
 
     if (loading) {
         return (
@@ -15,15 +15,15 @@ const Schedule = () => {
 
     if (error) {
         return (
-            <View style={styles.container}>
-                <Text>Error: {error}</Text>
+            <View style={styles.errorContainer}>
+                <Text style={styles.errorText}>Error: {error}</Text>
             </View>
         );
     }
 
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.header}>Company Schedule</Text>
+            <Text style={styles.header}>Today's Schedule</Text>
             {data?.schedule?.map((event, index) => (
                 <View key={index} style={styles.eventContainer}>
                     <Text style={styles.eventTime}>{event.time}</Text>
@@ -46,11 +46,12 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 16,
+        color: '#333', // Darker color for text visibility
     },
     eventContainer: {
         marginBottom: 20,
         padding: 10,
-        backgroundColor: '#ff6400b3', // Company theme color
+        backgroundColor: '#004d00', // Company theme color
         borderRadius: 5,
     },
     eventTime: {
@@ -73,6 +74,17 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#fff',
         marginTop: 8,
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff', // Ensure background color matches container
+        padding: 16,
+    },
+    errorText: {
+        color: 'red', // Red color for error text
+        fontSize: 16,
     },
 });
 
