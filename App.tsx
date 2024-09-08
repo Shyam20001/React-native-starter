@@ -5,114 +5,200 @@
  * @format
  */
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+// import React from 'react';
+// //import type {PropsWithChildren} from 'react';
+// import Demo from './pages/Demo';
+// import Schedule from './components/Schedule';
+// import Login from './components/api/Login';
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
+// import {SafeAreaView, StyleSheet, Text, View, } from 'react-native';
+// import Dashboard from './components/Dashboard';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+// function App(): React.JSX.Element {
+//   return (
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+//   <><Login navigation={Login} /><Dashboard /></>
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   sectionContainer: {
+//     marginTop: 32,
+//     paddingHorizontal: 24,
+//   },
+//   sectionTitle: {
+//     fontSize: 24,
+//     fontWeight: '600',
+//   },
+//   sectionDescription: {
+//     marginTop: 8,
+//     fontSize: 18,
+//     fontWeight: '400',
+//   },
+//   highlight: {
+//     fontWeight: '700',
+//   },
+// });
+
+// export default App;
+
+// App.js
+// import React from 'react';
+// import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
+// import Login from './components/api/Login';
+
+// const Stack = createStackNavigator();
+
+// const App = () => {
+//   return (
+//     <NavigationContainer>
+//       <SafeAreaView style={styles.safeArea}>
+//         <Stack.Navigator initialRouteName="Login">
+//           <Stack.Screen name="Login" component={Login} />
+//         </Stack.Navigator>
+//       </SafeAreaView>
+//     </NavigationContainer>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   safeArea: {
+//     flex: 1,
+//     backgroundColor: '#fff', // You can set a different background color if needed
+//   },
+// });
+
+// export default App;
+// import React, { useState, useEffect } from 'react';
+// import { View, ActivityIndicator } from 'react-native';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { NavigationContainer } from '@react-navigation/native';
+// import { createStackNavigator } from '@react-navigation/stack';
+// import Login from './components/api/Login';
+// import Dashboard from './components/Dashboard';
+
+// // Initialize the Stack Navigator
+// const Stack = createStackNavigator();
+
+// function App(): React.JSX.Element {
+//   const [isAuthenticated, setIsAuthenticated] = useState(false);
+//   const [loading, setLoading] = useState(true);
+
+//   // Function to check token validity
+//   const checkTokenValidity = async () => {
+//     try {
+//       const token = await AsyncStorage.getItem('userToken');
+//       if (token) {
+//         // Token exists, mark as authenticated
+//         setIsAuthenticated(true);
+//       } else {
+//         // No token, not authenticated
+//         setIsAuthenticated(false);
+//       }
+//     } catch (error) {
+//       console.error('Error fetching token: ', error);
+//       setIsAuthenticated(false);
+//     } finally {
+//       // End loading after token check
+//       setLoading(false);
+//     }
+//   };
+
+//   // Check token on initial load
+//   useEffect(() => {
+//     checkTokenValidity();
+//   }, []);
+
+//   if (loading) {
+//     // Display loading spinner while checking token
+//     return (
+//       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+//         <ActivityIndicator size="large" color="#0000ff" />
+//       </View>
+//     );
+//   }
+
+//   return (
+//     <NavigationContainer>
+//       <Stack.Navigator
+//         initialRouteName={isAuthenticated ? 'Dashboard' : 'Login'}
+//       >
+//         <Stack.Screen name="Login" component={Login} />
+//         <Stack.Screen name="Dashboard" component={Dashboard} />
+//       </Stack.Navigator>
+//     </NavigationContainer>
+//   );
+// }
+
+// export default App;
+
+
+import React, { useState, useEffect } from 'react';
+import { View, ActivityIndicator } from 'react-native';
+import * as Keychain from 'react-native-keychain'; // Import Keychain
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Login from './components/api/Login';
+import Dashboard from './components/Dashboard';
+
+// Initialize the Stack Navigator
+const Stack = createStackNavigator();
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  // Function to check token validity
+  const checkTokenValidity = async () => {
+    try {
+      // Get the token from Keychain
+      const credentials = await Keychain.getGenericPassword();
+      const token = credentials?.password; // Retrieve the token from credentials
+      
+      if (token) {
+        // Token exists, mark as authenticated
+        setIsAuthenticated(true);
+      } else {
+        // No token, not authenticated
+        setIsAuthenticated(false);
+      }
+    } catch (error) {
+      console.error('Error fetching token: ', error);
+      setIsAuthenticated(false);
+    } finally {
+      // End loading after token check
+      setLoading(false);
+    }
   };
 
+  // Check token on initial load
+  useEffect(() => {
+    checkTokenValidity();
+  }, []);
+
+  if (loading) {
+    // Display loading spinner while checking token
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName={isAuthenticated ? 'Dashboard' : 'Login'}
+      >
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
